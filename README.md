@@ -2,14 +2,14 @@
 
 ## Usage
 
-### Setup python environment
+Setup python environment
     pip3 install langchain openai tiktoken faiss-cpu unstructured flask
 
-### Export OpenAI API key
+Export OpenAI API key
     export OPENAI_API_KEY="your_api_key"
 
-### Pre-process source PDF
+Pre-process source PDF
     python3 create_vector_store.py
 
-### Run demo app
+Run demo app
     python3 app.py
