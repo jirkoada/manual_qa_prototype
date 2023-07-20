@@ -45,20 +45,25 @@ def answer():
 
     # Process the question and generate the answer using your LangChain model
     # Add your code here to handle the question and generate the answer
-
-    if question == "s":
-        scratched = chat_bot.scratch()
-        ans = "Latest question scratched" if scratched else "Nothing to scratch"
-    elif question == "r":
-        chat_bot.reset()
-        ans = "Conversation reset"
-    elif question == "h":
-        ans = str(chat_bot.history())
-    else:
-        ans = chat_bot.ask(question)
+    ans = chat_bot.ask(question)
 
     # Return the answer as a response
     return {'answer': ans}
+
+@app.route('/history', methods=['POST'])
+def history():
+    return {'answer': str(chat_bot.history())}
+
+@app.route('/scratch', methods=['POST'])
+def scratch():
+    scratched = chat_bot.scratch()
+    ans = "Latest question scratched" if scratched else "Nothing to scratch"
+    return {'answer': ans}
+
+@app.route('/reset', methods=['POST'])
+def reset():
+    chat_bot.reset()
+    return {'answer': "Conversation reset"}
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
