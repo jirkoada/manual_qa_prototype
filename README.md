@@ -17,3 +17,7 @@ Pre-process source PDF
 Run demo app
 
     python3 app.py
+
+### CLI Chat
+
+![Chat screenshot](./chat.png)
