@@ -20,14 +20,12 @@ Run demo app
 
 ### CLI Chat
 
-![Chat screenshot](./chat.png)
-
     python3 chat_cli.py
 
 control strings:
-
 - "h" - show current chat history
 - "s" - remove latest question from chat history
 - "r" - reset chat history
 - "q" - exit
 
+![Chat screenshot](./chat.png)
