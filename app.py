@@ -6,14 +6,24 @@ from langchain.chains import RetrievalQA
 from langchain.llms import OpenAI
 import os
 import openai
+from ft_embs import *
+import argparse
 
-from my_embs import myEmbs
+parser = argparse.ArgumentParser()
+parser.add_argument("--fasttext", default=False, action=argparse.BooleanOptionalAction, help="Use fasttext embeddings")
+args = parser.parse_args([] if "__file__" not in globals() else None)
 
 app = Flask(__name__)
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
-# embeddings = OpenAIEmbeddings()
-embeddings = myEmbs()
+
+if args.fasttext:
+    print("Using fastText embeddings")
+    embeddings = FTembeddings()
+else:
+    print("Using OpenAI embeddings")
+    embeddings = OpenAIEmbeddings()
+    
 db = FAISS.load_local("faiss_store", embeddings)
 qa = RetrievalQA.from_chain_type(
     llm=OpenAI(temperature=0, streaming=True),

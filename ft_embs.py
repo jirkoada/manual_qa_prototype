@@ -1,8 +1,7 @@
 from typing import List
 import fasttext
 
-
-class myEmbs:
+class FTembeddings:
 
     def __init__(self):
         self.model = fasttext.load_model("../models/cc.cs.300.bin")
