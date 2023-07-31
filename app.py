@@ -7,10 +7,13 @@ from langchain.llms import OpenAI
 import os
 import openai
 
+from my_embs import myEmbs
+
 app = Flask(__name__)
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
-embeddings = OpenAIEmbeddings()
+# embeddings = OpenAIEmbeddings()
+embeddings = myEmbs()
 db = FAISS.load_local("faiss_store", embeddings)
 qa = RetrievalQA.from_chain_type(
     llm=OpenAI(temperature=0, streaming=True),
@@ -38,4 +41,5 @@ def answer():
     return {'answer': ans}
 
 if __name__ == '__main__':
+    print("Starting test client.")
     app.run()
