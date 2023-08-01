@@ -16,7 +16,7 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 if args.fasttext:
     print("Using fastText embeddings")
     embeddings = FTembeddings()
-    paths = ["pdfs/Orwe1984-text20.pdf"]
+    paths = ['pdfs/Manual.pdf', ] # "pdfs/Orwe1984-text20.pdf"
 else:
     print("Using OpenAI embeddings")
     embeddings = OpenAIEmbeddings()

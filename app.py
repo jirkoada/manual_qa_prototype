@@ -5,12 +5,14 @@ from langchain import OpenAI
 from langchain.chains import RetrievalQA
 from langchain.llms import OpenAI
 import os
+import argparse
 import openai
 from ft_embs import *
-import argparse
+from bard import BardCustom
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--fasttext", default=False, action=argparse.BooleanOptionalAction, help="Use fasttext embeddings")
+parser.add_argument("--bard_qa", default=False, action=argparse.BooleanOptionalAction, help="Use BardAPI for RetrievalQA")
 args = parser.parse_args([] if "__file__" not in globals() else None)
 
 app = Flask(__name__)
@@ -25,8 +27,16 @@ else:
     embeddings = OpenAIEmbeddings()
     
 db = FAISS.load_local("faiss_store", embeddings)
+
+if args.bard_qa:
+    print("Using Bard for QA")
+    llm = BardCustom()
+else:
+    print("Using OpenAI for QA")
+    llm=OpenAI(temperature=0, streaming=True)
+
 qa = RetrievalQA.from_chain_type(
-    llm=OpenAI(temperature=0, streaming=True),
+    llm=llm,
     chain_type="stuff",
     retriever=db.as_retriever(),
     input_key="question",
