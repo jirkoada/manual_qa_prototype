@@ -4,6 +4,7 @@ from langchain.vectorstores import FAISS
 from langchain import OpenAI
 from langchain.chains import RetrievalQA
 from langchain.llms import OpenAI
+from langchain.llms import LlamaCpp
 import os
 import argparse
 import openai
@@ -16,10 +17,10 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 print("Using OpenAI embeddings")
 embeddings = OpenAIEmbeddings()
     
-db = FAISS.load_local("faiss_store", embeddings)
+db = FAISS.load_local("faiss_store_llama", embeddings)
 
-print("Using OpenAI for QA")
-llm=OpenAI(temperature=0, streaming=True)
+print("Using Llama2 for QA")
+llm = LlamaCpp(model_path="/home/poludmik/virtual_env_project/llama/llama-2-7b-chat/ggml-model-q4.bin", n_ctx=2048)
 
 qa = RetrievalQA.from_chain_type(
     llm=llm,
@@ -27,6 +28,8 @@ qa = RetrievalQA.from_chain_type(
     retriever=db.as_retriever(),
     input_key="question",
 )
+
+print("Prompt template:\n", qa.combine_documents_chain.llm_chain.prompt.template)
 
 # Route for the index page
 @app.route('/')

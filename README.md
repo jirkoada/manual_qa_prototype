@@ -4,7 +4,7 @@
 
 Setup python environment
 
-    pip3 install langchain openai tiktoken faiss-cpu unstructured flask
+    pip3 install langchain openai tiktoken faiss-cpu unstructured flask bardapi
 
 Export OpenAI API key
 
@@ -30,3 +30,25 @@ control strings:
 - "q" - exit
 
 ![Chat screenshot](./chat.png)
+
+## Bard, fasttext and Llama (separate folders)
+
+### FastText embeddings
+To use fasttext embeddings in **fasttext_embs** folder:
+```
+git clone https://github.com/facebookresearch/fastText.git
+cd fastText
+sudo pip install .
+# or with:
+sudo python setup.py install
+```
+
+### Bard chat
+
+Follow the README at https://github.com/dsdanielpark/Bard-API to use **Bard** in **/bard** folder (RetrievalQA). After you get the __Secure-1PSID value from your browser, do:
+```
+export _BARD_API_KEY="your__Secure-1PSID_value"
+```
+
+### Llama
+tba.

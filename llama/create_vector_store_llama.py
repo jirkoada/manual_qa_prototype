@@ -1,4 +1,5 @@
 from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.embeddings import LlamaCppEmbeddings
 from langchain.vectorstores import FAISS
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.document_loaders import UnstructuredPDFLoader
@@ -6,12 +7,11 @@ import os
 import openai
 import argparse
 
-
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-print("Using OpenAI embeddings")
+print("Using OpenAI embeddings") # TODO: LlamaCpp embeddings
 embeddings = OpenAIEmbeddings()
-paths = ['pdfs/Manual.pdf']
+paths = ['../pdfs/Manual.pdf', ] # "../pdfs/Orwe1984-text20.pdf"
 
 print("Loading documents")
 pages = []
@@ -31,7 +31,7 @@ texts = text_splitter.split_documents(pages)
 # Create vector database
 print("Generating database")
 db = FAISS.from_documents(texts, embeddings)
-store_path = "faiss_store"
+store_path = "faiss_store_llama"
 db.save_local(store_path)
 
 print(f"Database stored in {store_path} folder")

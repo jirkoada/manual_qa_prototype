@@ -7,16 +7,16 @@ from langchain.llms import OpenAI
 import os
 import argparse
 import openai
-
+from ft_embs import *
 
 app = Flask(__name__)
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-print("Using OpenAI embeddings")
-embeddings = OpenAIEmbeddings()
-    
-db = FAISS.load_local("faiss_store", embeddings)
+print("Using fastText embeddings")
+embeddings = FTembeddings()
+
+db = FAISS.load_local("faiss_store_ft", embeddings)
 
 print("Using OpenAI for QA")
 llm=OpenAI(temperature=0, streaming=True)

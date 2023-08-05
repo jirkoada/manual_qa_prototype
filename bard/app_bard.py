@@ -4,10 +4,14 @@ from langchain.vectorstores import FAISS
 from langchain import OpenAI
 from langchain.chains import RetrievalQA
 from langchain.llms import OpenAI
+from langchain.llms import LlamaCpp
 import os
 import argparse
 import openai
+from bard import BardCustom
 
+parser = argparse.ArgumentParser()
+args = parser.parse_args([] if "__file__" not in globals() else None)
 
 app = Flask(__name__)
 
@@ -18,8 +22,8 @@ embeddings = OpenAIEmbeddings()
     
 db = FAISS.load_local("faiss_store", embeddings)
 
-print("Using OpenAI for QA")
-llm=OpenAI(temperature=0, streaming=True)
+print("Using Bard for QA")
+llm = BardCustom()
 
 qa = RetrievalQA.from_chain_type(
     llm=llm,

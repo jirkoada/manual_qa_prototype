@@ -27,7 +27,6 @@ class BardCustom(LLM):
     #     return {"n": self.n}
 
 
-
 if __name__ == "__main__":
     print(Bard().get_answer("Hi how are you")['content'])
 
