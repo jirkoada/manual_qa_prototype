@@ -51,4 +51,4 @@ export _BARD_API_KEY="your__Secure-1PSID_value"
 ```
 
 ### Llama
-tba.
+[Gathered knowledge so far](llama/LLAMA2_KNOWLEDGE.md)

@@ -18,7 +18,7 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 print("Using LlamaCpp embeddings")
 embeddings = LlamaCppEmbeddings(model_path="/home/poludmik/virtual_env_project/llama/llama-2-7b-chat/ggml-model-q4.bin", n_ctx=2048)
-db = FAISS.load_local("faiss_store_llama", embeddings)
+db = FAISS.load_local("faiss_store_llama_2-7b-chat", embeddings)
 
 
 
