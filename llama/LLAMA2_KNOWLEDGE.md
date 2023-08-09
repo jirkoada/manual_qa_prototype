@@ -5,7 +5,8 @@ Hopefully, this document describes everything important of what I've gathered so
 Either by copying them from cluster - /lscratch/poludmik or download directly by following instructions on Meta website or meta on huggingface.
 
 ### /lscratch/poludmik
-(No space on /lscratch, uploaded only th 2-7b model so far)
+(No space available on /lscratch, I uploaded only th 2-7b model so far).
+Also, the faiss_indexes for Llama-2-7b and Llama-2-7b-chat models are there.
 
 I downloaded two models from HF: 
 * https://huggingface.co/meta-llama/Llama-2-7b-chat (*from_hf_2-7b-chat* folder)
@@ -42,7 +43,7 @@ There are several types of models.
     tokenizer = LlamaTokenizer.from_pretrained("meta-llama/Llama-2-7b-chat-hf")
     model = LlamaForCausalLM.from_pretrained("meta-llama/Llama-2-7b-chat-hf")
 
-    sentence = "Q: I have two blue apples and three yellow bananas. What colorare   my apples? A: "
+    sentence = "Q: I have two blue apples and three yellow bananas. What color are my apples? A: "
 
     inputs = tokenizer(sentence, return_tensors="pt")
     generate_ids = model.generate(inputs.input_ids, max_length=30)
@@ -50,7 +51,7 @@ There are several types of models.
 
     print(" ".join(result))
     ```
-    If needed(hopefully not), it is possible to convert simple Llama-2-7b-chat model-folders to Llama-2-7b-chat-hf with a script `convert_pth_weights_to_hf_format.py` in [poludmik test repo](https://github.com/poludmik/Llama2_tests).
+    If needed (hopefully not), it is possible to convert simple Llama-2-7b-chat model-folders to Llama-2-7b-chat-hf with a script `convert_pth_weights_to_hf_format.py` in [poludmik test repo](https://github.com/poludmik/Llama2_tests).
 
 
 ### Converting .pth model-folders to a single .bin file 
@@ -61,12 +62,12 @@ It is needed to use with:
 * from langchain.embeddings import LlamaCppEmbeddings
 
 These modules accept a single **.bin** model file as a parameter. 
-To convert a whole model-folder downloaded from huggingface, you can use a `convert.py` script from [this repo](https://github.com/ggerganov/llama.cpp/tree/master). It is possible to pass a quantization level as a parameter (q4_0, q4_1, ...). I used [another repos](https://github.com/ggerganov/llama.cpp/tree/master) script to quantize models to q4_0.
+To convert a whole model-folder downloaded from huggingface, you can use a `convert.py` script from [this repo](https://github.com/ggerganov/llama.cpp/tree/master). It is possible to pass a quantization level as a parameter (q4_0, q4_1, ...). But I used a separate [repo](https://github.com/ggerganov/llama.cpp/tree/master) script to quantize models to q4_0.
 ```
 $ ./quantize weights/ggml-model-f32.bin weights/ggml-model-q4.bin q4_0
 ```
 
-### Generate sentence embeddings
+### Generate sentence embeddings :information_source:
 
 I used [this](https://api.python.langchain.com/en/latest/embeddings/langchain.embeddings.llamacpp.LlamaCppEmbeddings.html) as a guideline for embedding generation with langchain.
 
@@ -83,7 +84,15 @@ llama = LlamaCppEmbeddings(model_path="from_hf_2-7b/ggml-model-q4_0.bin", n_ctx=
 query_result = llama.embed_query("Sentence to embed.")
 print(len(query_result))
 ```
-You can also check [test.py](https://github.com/poludmik/Llama2_tests/blob/master/test.py) for more examples of Llama applications.
+To use it with **RetrievalQA**:
+```python
+embeddings = LlamaCppEmbeddings(model_path="from_hf_2-7b/ggml-model-q4_0.bin", n_ctx=2048)
+db = FAISS.load_local("faiss_store_llama_2-7b", embeddings)
+```
+
+### Get a text response from a model
+There are several possibilities how to do this. Check out my [test.py](https://github.com/poludmik/Llama2_tests/blob/master/test.py) for more examples of Llama2 applications.
+
 
 ## Notes
 I used `from_hf_2-7b/ggml-model-q4_0.bin` and `from_hf_2-7b-chat/ggml-model-q4_0.bin` models to generate FAISS indexes. 

@@ -17,9 +17,8 @@ app = Flask(__name__)
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 print("Using LlamaCpp embeddings")
-embeddings = LlamaCppEmbeddings(model_path="/home/poludmik/virtual_env_project/llama/llama-2-7b-chat/ggml-model-q4.bin", n_ctx=2048)
-db = FAISS.load_local("faiss_store_llama_2-7b-chat", embeddings)
-
+embeddings = LlamaCppEmbeddings(model_path="/home/poludmik/virtual_env_project/llama/from_hf_2-7b/ggml-model-q4_0.bin", n_ctx=2048)
+db = FAISS.load_local("faiss_store_llama_2-7b", embeddings)
 
 
 print("Using Llama2 for QA")
@@ -32,7 +31,6 @@ llm = HuggingFacePipeline.from_model_id( # also returns langchain.llms.base.LLM
     pipeline_kwargs={"max_new_tokens": 300},
     # device=0, # not enough memory on cluster for cuda
     )
-
 
 qa = RetrievalQA.from_chain_type(
     llm=llm,
