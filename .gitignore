@@ -1,3 +1,5 @@
 __pycache__
 faiss_store*
 venv
+fasttext_embs/cc.en.300.bin
+fasttext_embs/cc.en.300.bin.gz

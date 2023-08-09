@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Question Answering</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Porsche Question Answering</h1>
+    <form id="qaForm">
+        <label for="question">Question:</label>
+        <input type="text" id="question" name="question" size="100" required>
+        <button type="submit">Ask</button>
+    </form>
+    <div id="answerContainer" style="display: none;">
+        <h3>Answer:</h3>
+        <textarea id="answer" cols="100" rows="15" readonly></textarea>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // Handle form submission
+            $("#qaForm").submit(function(event) {
+                event.preventDefault();
+                var question = $("#question").val();
+
+                // Send AJAX request to the Flask endpoint
+                $.ajax({
+                    type: "POST",
+                    url: "/answer",
+                    data: { question: question },
+                    success: function(response) {
+                        $("#answer").val(response.answer);
+                        $("#answerContainer").show();
+                    },
+                    error: function(error) {
+                        console.error("Error:", error);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
